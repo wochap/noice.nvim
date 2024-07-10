@@ -69,11 +69,23 @@ function NuiView:update_options()
         local col = self._opts.position and self._opts.position.col
         local row = self._opts.position and self._opts.position.row
         self._opts.anchor = Util.nui.anchor(width, height)
+        -- when we add padding or border, we need to add an offset
+        -- so the popup gets positioned correctly, just one line after the cursor.
+        local padding = Util.nui.normalize_padding(self._opts.border)
+        local hasBorder = self._opts.border.style ~= "none"
+        local y_offset = math.floor(((padding.top + padding.bottom) / 2) + 0.5) + (hasBorder and 1 or 0)
+        local x_offset = math.floor(((padding.left + padding.right) / 2) + 0.5) + (hasBorder and 1 or 0)
         if self._opts.anchor:find("S") and row then
-          self._opts.position.row = -row + 1
+          self._opts.position.row = -row + 1 + y_offset
+        end
+        if self._opts.anchor:find("N") and row then
+          self._opts.position.row = row + y_offset
         end
         if self._opts.anchor:find("E") and col then
-          self._opts.position.col = -col
+          self._opts.position.col = -col + x_offset
+        end
+        if self._opts.anchor:find("W") and col then
+          self._opts.position.col = col + x_offset
         end
       end
     else
