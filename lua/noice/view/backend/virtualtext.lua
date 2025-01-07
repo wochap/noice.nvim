@@ -20,7 +20,7 @@ function VirtualText:show()
   if self._messages[1] then
     self.extmark = vim.api.nvim_buf_set_extmark(self.buf, Config.ns, line, col, {
       virt_text_pos = "eol",
-      virt_text = { { vim.trim(self._messages[1]:content()), self._opts.hl_group or "DiagnosticVirtualTextInfo" } },
+      virt_text = { { " " .. vim.trim(self._messages[1]:content()) .. " ", self._opts.hl_group or "DiagnosticVirtualTextInfo" }, },
       hl_mode = "combine",
     })
   end
