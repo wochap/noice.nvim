@@ -32,6 +32,7 @@ local defaults = {
     bottom = 0,
     left = 0,
   },
+  showBar = true,
 }
 
 ---@param opts? ScrollbarOptions
@@ -121,20 +122,22 @@ function Scrollbar:update()
     self:show()
   end
 
-  if not (vim.api.nvim_win_is_valid(self.bar.winnr) and vim.api.nvim_win_is_valid(self.thumb.winnr)) then
+  if not ((self.opts.showBar and vim.api.nvim_win_is_valid(self.bar.winnr) or true) and vim.api.nvim_win_is_valid(self.thumb.winnr)) then
     self:hide()
     self:show()
   end
 
   local zindex = vim.api.nvim_win_get_config(self.winnr).zindex or 50
 
-  Util.win_apply_config(self.bar.winnr, {
-    height = dim.height,
-    width = 1,
-    col = dim.col + dim.width - 1,
-    row = dim.row,
-    zindex = zindex + 1,
-  })
+  if self.opts.showBar then
+    Util.win_apply_config(self.bar.winnr, {
+      height = dim.height,
+      width = 1,
+      col = dim.col + dim.width - 1,
+      row = dim.row,
+      zindex = zindex + 1,
+    })
+  end
 
   local thumb_height = math.floor(dim.height * dim.height / buf_height + 0.5)
   thumb_height = math.max(1, thumb_height)
