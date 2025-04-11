@@ -45,6 +45,7 @@
 ---@class _.NuiSplitOptions: _.NuiBaseOptions
 ---@field position "top"|"right"|"bottom"|"left"
 ---@field scrollbar? boolean
+---@field scrollbarOpts? ScrollbarOptions
 ---@field min_size? number
 ---@field max_size? number
 ---@field size number|string

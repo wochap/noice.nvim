@@ -106,10 +106,10 @@ function NuiView:create()
   self:mount()
   self:update_layout()
   if self._opts.scrollbar ~= false then
-    self._scroll = Scrollbar({
+    self._scroll = Scrollbar(vim.tbl_deep_extend("force", {
       winnr = self._nui.winid,
       padding = Util.nui.normalize_padding(self._opts.border),
-    })
+    }, self._opts.scrollbarOpts or {}))
     self._scroll:mount()
   end
   self._loading = false
